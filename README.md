@@ -21,7 +21,7 @@ research codebase. The focus is transparency and faithfulness to the published r
 ├── solver_pv.edp                       # Main FreeFem++ script
 ├── lib/                                # Folder with utility script for solver_pv.edp
 │   ├── mesh-generation.edp             # Mesh generation utilities
-│   └── remeshing.edp                  # Boundary remeshing utilities
+│   └── remeshing.edp                   # Boundary remeshing utilities
 ├── semicircle_test.tar.xz/             # Example output from a reference simulation
 │   ├── params.csv                      # Plot of the first and last traction frames
 │   ├── global_sol.csv                  # Plot of the first and last velocity frames
