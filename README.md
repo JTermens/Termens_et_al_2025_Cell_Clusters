@@ -41,7 +41,7 @@ research codebase. The focus is transparency and faithfulness to the published r
 │   └── gifs/                           # Boundary remeshing utilities
 │       ├── semicircle_test_y-trac.gif  # Evolution of the local cluster traction
 │       └── semicircle_test_y-vel.gif   # Evolution of the local cluster traction
-└── README.txt               # This file
+└── README.txt                          # This file
 ```
 
 ---
