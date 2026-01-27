@@ -1,0 +1,34 @@
+// devcontainer.json
+//
+// Simple devcontainer.json to execute a demo simulation for the paper
+// Termens et al. "Cell clusters sense their global shape to drive collective 
+// migration" (2025).
+//
+// Author: Joan Térmens (https://github.com/JTermens)
+// Last update: 26th of january 2026
+//
+// The present enviroment is meant to execute the demo, not for interactive development. For a
+// complete development environement, refer to the latest FreeFem++ version at 
+// https://github.com/FreeFem/FreeFem-sources/releases.
+//
+{
+  "name": "Termens_et_at_2025_Cell_Clusters",
+  "context": "..",
+  "dockerFile": "Dockerfile",
+  "workspaceFolder": "/workdir",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workdir,type=bind"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "pierre-marchand.vscode-freefem", // Syntax highlight for FreeFem++
+        "ms-vscode.cpptools", // for the C++ formatter
+        "ms-azuretools.vscode-containers"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}

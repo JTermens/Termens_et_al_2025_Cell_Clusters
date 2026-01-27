@@ -1,0 +1,3 @@
+domain,cut,R0,lengthScale,fracRarc,obd,ibd,Lc,lambda,La,eta,xi,zi,zeta,tscale,dt,dsave
+string,rad,um,um,adim,adim,adim,um,um,um,kPa*s,kPa*s/um^2,kPa/um,kPa,s,adim,adim
+oneCutSmooth,3.141593,200.000000,141.183303,0.100000,45,15,40.000000,500.000000,-250.000000,25000.000000,0.100000,0.100000,-25.000000,6250.000000,0.000500,20

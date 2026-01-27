@@ -1,0 +1,157 @@
+// ============================================================================
+// lib/remeshing.edp
+//
+// FreeFem++ module for the numerical simulations associated with:
+//
+//   Termens et al. (2025)
+//   "Cell clusters sense their global shape to drive collective migration"
+//
+// This file is part of the demo code accompanying the manuscript submission.
+// It is intended to illustrate the numerical pipeline and is not optimized
+// for large-scale production runs.
+//
+// Author: Joan Térmens
+// Last update: 20 Jan 2026
+//
+// Requirements:
+//   - FreeFem++ v4.12 or compatible
+//   - GSL (for spline interpolation, if applicable)
+//
+// Usage:
+//   This file is not meant to be executed standalone.
+//   It is included by `solver_pv.edp`.
+//
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// This module provides functions to reparametrize and remesh closed curves
+// representing cluster boundaries, with optional smoothing and boundary-layer
+// refinement.
+//
+// The remeshing strategy is designed to:
+//   - preserve global shape
+//   - avoid spurious curvature oscillations
+//   - maintain a controlled element size along the boundary
+//
+// ----------------------------------------------------------------------------
+
+
+func mesh closedRemesh(
+  real[int,int] bnd, real lBnd, int nBnd, real bndLayerWidth, int obd, 
+  int ibd, int labelBnd, real smoothCoef, bool keepPoints, bool bndLayer
+){
+  /*
+  [mesh] closedRemesh performs a boundary remeshing based on a spline interpolation
+  of the input boundary points.
+
+  Depending on the flag `keepPoints`, the outer boundary is
+  either:
+    - kept pointwise,
+    - or resampled using an Akima spline with prescribed density.
+
+  With `bndLayer`, the function optionally adapts the mesh into a union of a boundary 
+  layer mesh with a finer resolution and a bulk mesh with a coarses one. Using adapted
+  meshes greatly decreases the computational cost of the simulation while retaining a
+  good resolution for the regions were most of the model dynamics occour.
+
+  This function is designed to be called at each solver iteration where
+  boundary deformation becomes significant.
+  
+  Parameters:
+  - real[int, int] bnd: (3,nBnd) array with the boundary points. For (i,k):
+    - i = 0, x-coordinate of the k-th point.
+    - i = 1; y-coordinate of the k-th point.
+    - i = 2; arch length at the k-th point.  
+  - real lBnd: arch-length of the boundary bnd.
+  - real nBnd: number of points of the boundary array bnd.
+  - real bndLayerWidth: width of the boundary layer.
+  - int obd: Outer boundary density, obd points for bnd unit length.
+  - int ibd: Inner boundary density.
+  - int labelBnd: outer boundary identifier.
+  - real smoothCoef: coefficient for the smoothing of the inner boundary.
+  - bool keepPoints: if true, keeps the provided boundary points at bnd.
+  - bool bndLayer: if true, adapts the mesh with a finer boundary layer & a coarser bulk.
+
+  * Return type: mesh
+  */
+
+  int[int] be(1); // To save begin and ends of the curve
+  int minPoints = 20;
+
+  // It is not convenient to define a border inside an If
+  // So 1st define all the borders and then apply the If to the mesh generation
+
+  border OuterKeepPoints(t=0,1){ P=Curve(bnd,bnd(2,round(t*(nBnd)))/lBnd);label=labelBnd;}
+  
+  // Remesh the outr boundary using an Akima spline
+  gslspline splineX(gslinterpakima, bnd(2,:), bnd(0,:));
+  gslspline splineY(gslinterpakima, bnd(2,:), bnd(1,:));
+
+  border OuterSpline(t=0,1){x=splineX(t*lBnd); y=splineY(t*lBnd); label=labelBnd;}
+  
+  int nOut = keepPoints? nBnd : round(obd*lBnd);
+
+  mesh Th0;
+  if (keepPoints) {
+    Th0 = buildmesh(OuterKeepPoints(nOut));
+  } else {
+    Th0 = buildmesh(OuterSpline(nOut));
+  }
+
+  if (!bndLayer) {
+    return Th0;
+  }
+
+  // FEM Spaces
+  fespace Dh(Th0, P1); // For distance function (remeshing scheme) and data exports
+
+  // Distance function (d is the minimal distance to the boundary)
+  varf vong(B, d)= on(labelBnd,B=1);
+  real[int] ong=vong(0,Dh);
+  Dh B =1, d;
+  B[] = ong ? 0 : B[];
+  distance(Th0,B,d[]);
+
+  // Get the new inner boundary vertices (ISO is the contour d==bndLayerWidth) with multiple loops
+  real[int,int] ISO(3,1); int nc=isoline(Th0,d,iso=bndLayerWidth,close=0,ISO,beginend=be,smoothing=bndLayerWidth*smoothCoef,ratio=1.e-0);
+  int nInnerLoops = be.n/2;
+  // cout << be << endl;
+
+  int[int] nInner(nInnerLoops); // numer of points per loop
+  int nCorrectLoops = 0; // number of loops with more than minPoints
+  real[int] s0(nInnerLoops); // initial archlenght of the loop
+
+  // find number of points and count > minPoints
+  // Also, filter for errors in the archlength
+  for (int i=0;  i < nInnerLoops; i++){
+    real lInner=ISO(2,be(i*2+1)-1);
+    s0[i] = ISO(2,be(i*2));
+    nInner[i] = round(ibd*lInner);
+    if((nInner[i] > minPoints) && (s0[i] == 0)){nCorrectLoops++;}
+  }
+
+  // if the number of points is less than minPoints, filter the border for safety
+  int[int] nInnerFilter(nCorrectLoops);
+  int[int] beFilter(2*nCorrectLoops);
+
+  int j = 0;
+  for (int i=0;  i < nInnerLoops; i++){
+    if((nInner[i] > minPoints) && (s0[i] == 0)){
+      nInnerFilter[j] = nInner[i];
+      beFilter[2*j] = be[i*2];
+      beFilter[2*j+1] = be[i*2+1];
+      j++;
+    }
+  }
+  
+  border Inner(t=0,1;i) {P=Curve(ISO,beFilter(i*2),beFilter(i*2+1)-1,t); label=(labelBnd+1);} // Inner boundary multi-border
+
+  mesh Th;
+  if (keepPoints) {
+    Th = buildmesh(OuterKeepPoints(nOut)+Inner(nInnerFilter));
+  } else {
+    Th = buildmesh(OuterSpline(nOut)+Inner(nInnerFilter));
+  }
+  Th = change(Th, rmInternalEdges=1);
+  return Th;
+}
