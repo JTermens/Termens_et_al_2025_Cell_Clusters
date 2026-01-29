@@ -1,8 +1,10 @@
 // devcontainer.json
 //
 // Simple devcontainer.json to execute a demo simulation for the paper
-// Termens et al. "Cell clusters sense their global shape to drive collective 
-// migration" (2025).
+//
+// Térmens, J., Pi-Jaumà, I., Lavi, I., Matejčić, M., Fortunato, I. C., Trepat, X., and
+// Casademunt, J. "Cell clusters sense their global shape to drive collective migration."
+// arXiv preprint arXiv:2509.15910. (2025)
 //
 // Author: Joan Térmens (https://github.com/JTermens)
 // Last update: 26th of january 2026

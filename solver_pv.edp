@@ -3,8 +3,9 @@
 //
 // Main FreeFem++ script for the demo simulations associated with:
 //
-//   Termens et al. (2025)
-//   "Cell clusters sense their global shape to drive collective migration"
+//   Térmens, J., Pi-Jaumà, I., Lavi, I., Matejčić, M., Fortunato, I. C., Trepat, X., and
+//   Casademunt, J. "Cell clusters sense their global shape to drive collective migration."
+//   arXiv preprint arXiv:2509.15910. (2025)
 //
 // This script:
 //   - defines the physical and numerical parameters
@@ -42,7 +43,7 @@ bool debug = 0; // Enable extra plots and logs (for development only)
 bool err = 0;   // Whether the simulations ends with an error or not.
 
 // Save parameters
-bool bsave = 1; // To save the solutions or not, handy for debugging.
+bool bsave = 0; // To save the solutions or not, handy for debugging.
 int dsave = 20; // Save frame gap. Usually we do not need that many solutions to 
                 // represent an evolution and also it will save memory and loading time.
 

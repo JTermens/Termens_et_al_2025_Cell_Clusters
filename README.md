@@ -3,8 +3,9 @@
 This repository contains a minimal and self‑contained demo of the numerical simulations 
 associated with the manuscript:
 
-> Termens et al. (2025)
-> "Cell clusters sense their global shape to drive collective migration"
+> Térmens, J., Pi-Jaumà, I., Lavi, I., Matejčić, M., Fortunato, I. C., Trepat, X., and
+> Casademunt, J. "Cell clusters sense their global shape to drive collective migration."
+> arXiv preprint arXiv:2509.15910. (2025)
 
 The purpose of this repository is transparency and reproducibility: it allows referees 
 and readers to inspect the numerical pipeline, execute a representative simulation, and

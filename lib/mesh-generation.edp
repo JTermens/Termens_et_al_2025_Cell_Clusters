@@ -3,8 +3,9 @@
 //
 // FreeFem++ module for the numerical simulations associated with:
 //
-//   Termens et al. (2025)
-//   "Cell clusters sense their global shape to drive collective migration"
+//   Térmens, J., Pi-Jaumà, I., Lavi, I., Matejčić, M., Fortunato, I. C., Trepat, X., and
+//   Casademunt, J. "Cell clusters sense their global shape to drive collective migration."
+//   arXiv preprint arXiv:2509.15910. (2025)
 //
 // This file is part of the demo code accompanying the manuscript submission.
 // It is intended to illustrate the numerical pipeline and is not optimized
