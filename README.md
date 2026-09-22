@@ -100,7 +100,7 @@ devpod up .
 devpod ssh
 cd /workdir
 ```
-runs the simulation in the devcontainer using the later. All three methods are 
+opens the devcontainer environment using the later. All three methods are 
 functionally equivalent.
 
 ## Executing the simulation on FreeFem++
@@ -113,7 +113,7 @@ FreeFem++ solver_pv.edp -v 0
 ```
 where the verbosity is set to zero by default to reduce output noise in a demo context. 
 You could also run the simulation inside the devcontainer in `vscode` by either typing 
-<Super>+<Shift>+<r> or opening a terminal.
+`<Super>+<Shift>+<r>` or opening a terminal.
 
 The logic of the numerical method and the governing equations are detailed in 
 B. Numerical Scheme within the METHODS section of the cited paper. To further look for 
@@ -145,9 +145,14 @@ exploration.
 The repository is meant to see exactly how the simulations behind this paper were run, 
 rather than to provide a complete research and development framework.
 
+## Aknowledgements
+
+I would like to aknowledge Ido Lavi, Ph.D. for his invaluable help in conciving the simulation 
+methods and preparing an initial version of the codes here. 
+
 ---
 
 ## Contact
 
 Joan Térmens
-GitHub: [https://github.com/JTermens](https://github.com/JTermens)
+Orcid: [Joan Térmens](https://orcid.org/0009-0002-2356-2113)
