@@ -1,0 +1,75 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite the associated preprint below.
+  This citation will be updated with the full journal reference upon
+  publication.
+title: >-
+  Termens_et_al_2025_Cell_Clusters: numerical simulations for
+  "Cell clusters sense their global shape to drive collective migration"
+type: software
+authors:
+  - given-names: Joan
+    family-names: Térmens
+    orcid: 'https://orcid.org/0009-0002-2356-2113'
+  - given-names: Irina
+    family-names: Pi-Jaumà
+    orcid: 'https://orcid.org/0000-0002-5895-3782'
+  - given-names: Ido
+    family-names: Lavi
+    orcid: 'https://orcid.org/0009-0007-7944-4008'
+  - given-names: Marija
+    family-names: Matejčić
+    orcid: 'https://orcid.org/0000-0002-8140-3690'
+  - given-names: Isabela C.
+    family-names: Fortunato
+    orcid: 'https://orcid.org/0000-0001-7624-1108'
+  - given-names: Xavier
+    family-names: Trepat
+    orcid: 'https://orcid.org/0000-0002-7621-5214'
+  - given-names: Jaume
+    family-names: Casademunt
+    orcid: 'https://orcid.org/0000-0002-6154-439X'
+identifiers:
+  - type: other
+    value: 'arXiv:2509.15910'
+    description: arXiv preprint ID
+repository-code: 'https://github.com/JTermens/Termens_et_al_2025_Cell_Clusters'
+url: 'https://arxiv.org/abs/2509.15910'
+license: GPL-3.0
+preferred-citation:
+  type: article
+  title: >-
+    Cell clusters sense their global shape to drive collective migration
+  authors:
+    - given-names: Joan
+      family-names: Térmens
+      orcid: 'https://orcid.org/0009-0002-2356-2113'
+    - given-names: Irina
+      family-names: Pi-Jaumà
+      orcid: 'https://orcid.org/0000-0002-5895-3782'
+    - given-names: Ido
+      family-names: Lavi
+      orcid: 'https://orcid.org/0009-0007-7944-4008'
+    - given-names: Marija
+      family-names: Matejčić
+      orcid: 'https://orcid.org/0000-0002-8140-3690'
+    - given-names: Isabela C.
+      family-names: Fortunato
+      orcid: 'https://orcid.org/0000-0001-7624-1108'
+    - given-names: Xavier
+      family-names: Trepat
+      orcid: 'https://orcid.org/0000-0002-7621-5214'
+    - given-names: Jaume
+      family-names: Casademunt
+      orcid: 'https://orcid.org/0000-0002-6154-439X'
+  year: 2025
+  journal: arXiv preprint
+  identifiers:
+    - type: other
+      value: 'arXiv:2509.15910'
+      description: arXiv preprint ID
+  url: 'https://arxiv.org/abs/2509.15910'
+  notes: >-
+    Preprint under review. This entry will be replaced with the journal
+    article reference (DOI, journal name, volume, pages) once accepted
+    and published.
