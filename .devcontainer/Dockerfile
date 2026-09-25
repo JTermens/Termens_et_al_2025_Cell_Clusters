@@ -28,5 +28,3 @@ RUN apt-get update && apt-get install -y \
 
 # Define the work directory inside the container
 WORKDIR /workdir
-
-
