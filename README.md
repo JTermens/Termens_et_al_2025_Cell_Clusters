@@ -1,18 +1,14 @@
 # Termens_et_al_2025_Cell_Clusters
 
-This repository contains a minimal and self‑contained demo of the numerical simulations 
-associated with the manuscript:
+This repository contains a minimal and self-contained demo of the numerical simulations associated with the manuscript:
 
 > Térmens, J., Pi-Jaumà, I., Lavi, I., Matejčić, M., Fortunato, I. C., Trepat, X., and
 > Casademunt, J. "Cell clusters sense their global shape to drive collective migration."
-> arXiv preprint arXiv:2509.15910. (2025)
+> arXiv preprint arXiv:2509.15910 (2025).
 
-The purpose of this repository is transparency and reproducibility: it allows referees 
-and readers to inspect the numerical pipeline, execute a representative simulation, and
-reproduce the figures shown in the manuscript.
+The purpose of this repository is transparency and reproducibility: it allows referees and readers to inspect the numerical pipeline, execute a representative simulation, and reproduce the figures shown in the manuscript.
 
-It does not pretend to be a general‑purpose simulation framework, nor a production‑ready 
-research codebase. The focus is transparency and faithfulness to the published results.
+It does not pretend to be a general-purpose simulation framework, nor a production-ready research codebase. The focus is transparency and faithfulness to the published results.
 
 ## Repository structure
 
@@ -20,139 +16,124 @@ research codebase. The focus is transparency and faithfulness to the published r
 .
 ├── .devcontainer/                      # Containerized FreeFem++ environment
 ├── solver_pv.edp                       # Main FreeFem++ script
-├── lib/                                # Folder with utility script for solver_pv.edp
-│   ├── mesh-generation.edp             # Mesh generation utilities
-│   └── remeshing.edp                   # Boundary remeshing utilities
+├── lib/                                # Folder with utility scripts for solver_pv.edp
+│ ├── mesh-generation.edp               # Mesh generation utilities
+│ └── remeshing.edp                     # Boundary remeshing utilities
 ├── semicircle_test.tar.xz/             # Example output from a reference simulation
-│   ├── params.csv                      # Plot of the first and last traction frames
-│   ├── global_sol.csv                  # Plot of the first and last velocity frames
-│   ├── msh/                            # Folder with the output meshes in .msh format
-│   │   ├── mesh_1000000.msh
-│   │   ├── ...
-│   │   └── mesh_1001980.msh
-│   └── local_sol/                      # Folder with the output solutions in .txt format
-│       ├── sol_1000000.txt
-│       ├── ...
-│       └── sol_1001980.txt
-├── post-processig.nb                   # Wolfram Mathematica post-processing notebook
+│ ├── params.csv                        # Simulation parameters used in the reference run
+│ ├── global_sol.csv                    # Time evolution of the global (integrated) observables
+│ ├── msh/                              # Folder with the output meshes in .msh format
+│ │ ├── mesh_1000000.msh
+│ │ ├── ...
+│ │ └── mesh_1001980.msh
+│ └── local_sol/                        # Folder with the output solutions in .txt format
+│ ├── sol_1000000.txt
+│ ├── ...
+│ └── sol_1001980.txt
+├── post-processing.nb                  # Wolfram Mathematica post-processing notebook
 ├── semicircle_test_plots/              # Plots generated from the reference simulation
-│   ├── global_variable.png             # Fig showing the evolution of some integrals
-│   ├── taction_frames.png              # Plot of the first and last traction frames
-│   ├── velocity_frames.png             # Plot of the first and last velocity frames
-│   └── gifs/                           # Boundary remeshing utilities
-│       ├── semicircle_test_y-trac.gif  # Evolution of the local cluster traction
-│       └── semicircle_test_y-vel.gif   # Evolution of the local cluster traction
-└── README.txt                          # This file
+│ ├── global_variable.png               # Evolution of the global integrated observables
+│ ├── traction_frames.png               # First and last traction frames
+│ ├── velocity_frames.png               # First and last velocity frames
+│ └── gifs/                             # Animated evolution of local fields
+│ ├── semicircle_test_y-trac.gif        # Evolution of the local cluster traction
+│ └── semicircle_test_y-vel.gif         # Evolution of the local cluster velocity
+├── LICENSE                             # GPL-3.0
+└── README.md                           # This file
 ```
 
 ---
 
 ## Overview of the numerical pipeline
 
-The demo reproduces a representative simulation used in the manuscript. The numerical 
-pipeline is devided between the following scripts:
+The demo reproduces a representative simulation used in the manuscript. The numerical pipeline is divided between the following scripts:
 
-1. Geometry and mesh generation
-   Implemented in `mesh-generation.edp`, defining the initial cluster shape and boundary
-   discretization.
+1. **Geometry and mesh generation**
+   Implemented in [`mesh-generation.edp`](./lib/mesh-generation.edp), defining the initial cluster shape and boundary discretization.
 
-2. Adaptive remeshing
-   Implemented in `remeshing.edp`, ensuring numerical stability and resolution during 
-   boundary deformation.
+2. **Adaptive remeshing**
+   Implemented in [`remeshing.edp`](./lib/remeshing.edp), ensuring numerical stability and resolution during boundary deformation.
 
-3. Physical model and solver
-   Implemented in `solver_pv.edp`, which defines physical and numerical parameters,
-   solves the governing equations using FreeFem++ and writes results to disk.
+3. **Physical model and solver**
+   Implemented in [`solver_pv.edp`](solver_pv.edp), which defines physical and numerical parameters, solves the governing equations using FreeFem++, and writes results to disk.
 
-4. Post‑processing and visualization
-   Implemented in `post-process.nb` (Wolfram Mathematica), producing some similar plots 
-   to those in the manuscript.
-
+4. **Post-processing and visualization**
+   Implemented in [`post-processing.nb`](./post-processing.nb) (Wolfram Mathematica), producing plots analogous to those in the manuscript.
 
 ## Requirements
 
-To run the demo natively, you need a Unix-like environment (Linux, macOS) with FreeFem++ 
-v4.12 (or compatible) installed. Running the post‑processing notebook requires Wolfram 
-Mathematica in a reasonably recent version.
+To run the demo natively, you need a Unix-like environment (Linux, macOS) with FreeFem++ v4.12 (or compatible) installed. Running the post-processing notebook requires Wolfram Mathematica; the notebook was tested on version `14.3`.
 
-To avoid local installation issues, a containerized environment is provided (see below).
+To avoid local installation issues, a containerized environment is provided for FreeFem++ (see below). Mathematica cannot be containerized in this repository due to licensing restrictions.
 
 ## Running the simulation
 
 ### Using the provided devcontainer
 
-The `.devcontainer/` directory defines a minimal container environment based on the 
-official FreeFem++ docker image. It runs Ubuntu 22.04 LTS with FreeFem++ v4.12 installed 
-and mounts this repository into `/workdir`. We recommed to use this method in order to 
-ensure replicability and ease of use.
+The `./.devcontainer/` directory defines a minimal container environment pinned to a fixed FreeFem++ image (Ubuntu 22.04 LTS, FreeFem++ v4.12, referenced by digest for full reproducibility) and mounts this repository into `/workdir`. We recommend using this method to ensure replicability and ease of use.
 
-The easyest method to run repository within the devcontainer environment is to use the 
-`vscode` text editor. Upon opening the repository in `vscode` a notification asking to 
-install the devcontainer extension will appear in the bottow-right corner. Then, a new 
-notification will pop offering to open the repository in the devcontainer. After building 
-the environment you will be able to run the simulations. Even though using `vscode` is 
-recommended for its ease of use, the devcontainer is intentionally editor‑agnostic and 
-can be used with multiple tools, like Docker, Podman or DevPod. As an example, 
+The easiest method to run the repository within the devcontainer environment is to use the `vscode` text editor. Upon opening the repository in `vscode`, a notification asking to install the Dev Containers extension will appear in the bottom-right corner. A second notification will then offer to open the repository in the devcontainer. After building the environment you will be able to run the simulations.
+
+The devcontainer is also editor-agnostic and can be run directly with Docker or DevPod. As an example, using DevPod:
 
 ```bash
-cd /Termens_et_al_2025_Cell_Clusters
+cd Termens_et_al_2025_Cell_Clusters
 devpod up .
 devpod ssh
 cd /workdir
 ```
-opens the devcontainer environment using the later. All three methods are 
-functionally equivalent.
 
 ## Executing the simulation on FreeFem++
 
-Either inside the provided container or locally, if FreeFem++ is already installed, you 
-can simply run the simulations with:
+Either inside the provided container or locally (if FreeFem++ is already installed), you can run the simulation with:
 
 ```bash
 FreeFem++ solver_pv.edp -v 0
 ```
-where the verbosity is set to zero by default to reduce output noise in a demo context. 
-You could also run the simulation inside the devcontainer in `vscode` by either typing 
-`<Super>+<Shift>+<r>` or opening a terminal.
+Verbosity is set to zero by default to reduce output noise in a demo context. Inside the devcontainer in `vscode`, you can also run the simulation via the `<Shift>+<Super>+<r>` task shortcut provided by the `vscode-FreeFEM` support package, or by opening a terminal directly.
 
-The logic of the numerical method and the governing equations are detailed in 
-B. Numerical Scheme within the METHODS section of the cited paper. To further look for 
-implementation details, consult the script comments at `solver_pv.edp`, 
-`lib/mesh-generation.edp` and `lib/remeshing.edp`.
+Measured on a `AMD Ryzen 5 5625U with Radeon Graphics`, native Linux with Docker (no virtualization overhead) and 12 cores, the reference simulation takes approximately 1h 26min and peaks at ~0.6 GB of RAM.
+
+The logic of the numerical method and the governing equations are detailed in the Numerical Scheme section from the Supplementary Information of the cited paper. For further implementation details, consult the script comments in [`solver_pv.edp`](./solver_pv.edp), [`lib/mesh-generation.edp`](./lib/mesh-generation.edp), and [`lib/remeshing.edp`](./lib/remeshing.edp).
 
 ## Output and reference results
 
-Running the solver creates the output directory `semicircle_test/` as specified internally 
-in `solver_pv.edp`. To inspect the expected output format and compare your own results 
-against a known reference, the repository already contains the compressed folder 
-`semicircle_test.tar.xz` with results from a reference run.
+Running the solver creates the output directory `semicircle_test/`, as specified internally in `solver_pv.edp`. To inspect the expected output format and compare your own results against a known reference, the repository already contains the compressed folder [`semicircle_test.tar.xz`](./semicircle_test.tar.gz) with results from a reference run.
 
 ## Post‑processing with Wolfram Mathematica
 
-The file `post-processing.nb` is a Wolfram Mathematica notebook used to load the data at 
-`semicircle_test.tar.xz` and generate the figures associated with the demo simulation. 
-The plots generated by the notebook should match those in `semicircle_test_plots/`. Take 
-into account that the notebook is intentionally explicit rather than optimized, to favor 
-readability and transparency.
+The file [`post-processing.nb`](./post-processing.nb) is a Wolfram Mathematica notebook used to load the data from [`semicircle_test.tar.xz`](./semicircle_test.tar.gz) and generate the figures associated with the demo simulation. The plots generated by the notebook should match those in [`semicircle_test_plots/`](./semicircle_test_plots/). The notebook is intentionally explicit rather than optimized, to favor readability and transparency.
 
 ## Notes on scope and limitations
 
 * This demo illustrates one representative parameter set.
 * The post-processing code prioritizes clarity over performance.
-* The numerical parameters are chosen for robustness and reproducibility, not exhaustive 
-exploration.
+* The numerical parameters are chosen for robustness and reproducibility, not for exhaustive exploration.
 
-The repository is meant to see exactly how the simulations behind this paper were run, 
-rather than to provide a complete research and development framework.
+This repository is meant to show exactly how the simulations behind this paper were run, rather than to provide a complete research and development framework.
 
-## Aknowledgements
+## License
 
-I would like to aknowledge Ido Lavi, Ph.D. for his invaluable help in conciving the simulation 
-methods and preparing an initial version of the codes here. 
+This repository is released under the GNU General Public License v3.0 (GPL-3.0). See
+[LICENSE](./LICENSE) for details.
+
+## Citation
+
+If you use this code, please cite the associated preprint (see [CITATION.cff](./CITATION.cff)):
+
+> Térmens, J., Pi-Jaumà, I., Lavi, I., Matejčić, M., Fortunato, I. C., Trepat, X., and
+> Casademunt, J. "Cell clusters sense their global shape to drive collective migration."
+> arXiv:2509.15910 (2025). https://arxiv.org/abs/2509.15910
+
+This citation will be updated with the full journal reference upon publication.
+
+## Acknowledgements
+
+I would like to acknowledge Ido Lavi, Ph.D., for his invaluable help in conceiving the simulation methods and preparing an initial version of the codes here.
 
 ---
 
 ## Contact
 
 Joan Térmens
-Orcid: [Joan Térmens](https://orcid.org/0009-0002-2356-2113)
+ORCID: [0009-0002-2356-2113](https://orcid.org/0009-0002-2356-2113)
