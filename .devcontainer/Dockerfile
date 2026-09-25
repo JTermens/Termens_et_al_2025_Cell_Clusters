@@ -17,8 +17,14 @@
 # If you also need an editor inside the container, install one manually 
 # (e.g. apt-get install neovim).
 
-# Pin the version to avoid compatibility problems.
-FROM freefem/freefem:v4.12
+# Pin the version and digest to avoid compatibility problems.
+FROM freefem/freefem:v4.12@sha256:b5fb46fa244c707cce7387b7b12315be2bf82a65040d422d55b207f84a1843e8
+
+# Install time for a minimal performace analysis
+RUN apt-get update && apt-get install -y \
+    time \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* 
 
 # Define the work directory inside the container
 WORKDIR /workdir
