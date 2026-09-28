@@ -1,5 +1,8 @@
 # Termens_et_al_2025_Cell_Clusters
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23008220.svg)](https://doi.org/10.5281/zenodo.23008220)
+
+
 This repository contains a minimal and self-contained demo of the numerical simulations associated with the manuscript:
 
 > Térmens, J., Pi-Jaumà, I., Lavi, I., Matejčić, M., Fortunato, I. C., Trepat, X., and
