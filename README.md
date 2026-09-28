@@ -6,7 +6,7 @@ This repository contains a minimal and self-contained demo of the numerical simu
 > Casademunt, J. "Cell clusters sense their global shape to drive collective migration."
 > arXiv preprint arXiv:2509.15910 (2025).
 
-The purpose of this repository is transparency and reproducibility: it allows referees and readers to inspect the numerical pipeline, execute a representative simulation, and reproduce the figures shown in the manuscript.
+The purpose of this repository is transparency and reproducibility: it allows reviewers and readers to inspect the numerical pipeline, execute a representative simulation, and generate demo figures similar to those shown in the manuscript.
 
 It does not pretend to be a general-purpose simulation framework, nor a production-ready research codebase. The focus is transparency and faithfulness to the published results.
 
